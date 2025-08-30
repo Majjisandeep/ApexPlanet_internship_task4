@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Listing</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { text-align: center; }
+    .filters { text-align: center; margin-bottom: 20px; }
+    select { padding: 8px; margin: 5px; }
+    .products { display: flex; flex-wrap: wrap; justify-content: center; }
+    .card { border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin: 10px; width: 200px; background: white; }
+  </style>
+</head>
+<body>
+  <h1>Product Listing</h1>
+  <div class="filters">
+    <select id="categoryFilter" onchange="filterProducts()">
+      <option value="all">All Categories</option>
+      <option value="electronics">Electronics</option>
+      <option value="books">Books</option>
+      <option value="fitness">Fitness</option>
+    </select>
+
+    <select id="sortOption" onchange="sortProducts()">
+      <option value="none">Sort By</option>
+      <option value="priceLowHigh">Price: Low to High</option>
+      <option value="priceHighLow">Price: High to Low</option>
+    </select>
+  </div>
+
+  <div class="products" id="productList"></div>
+
+  <script>
+    const products = [
+      { name: "Laptop", category: "electronics", price: 600 },
+      { name: "Headphones", category: "electronics", price: 80 },
+      { name: "DBMS Book", category: "books", price: 40 },
+      { name: "Dumbbells", category: "fitness", price: 50 },
+      { name: "Yoga Mat", category: "fitness", price: 25 },
+      { name: "Java Book", category: "books", price: 30 }
+    ];
+
+    function displayProducts(items) {
+      const productList = document.getElementById("productList");
+      productList.innerHTML = "";
+      items.forEach(p => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `<h3>${p.name}</h3><p>Category: ${p.category}</p><p>Price: $${p.price}</p>`;
+        productList.appendChild(card);
+      });
+    }
+
+    function filterProducts() {
+      const category = document.getElementById("categoryFilter").value;
+      let filtered = products;
+      if (category !== "all") {
+        filtered = products.filter(p => p.category === category);
+      }
+      displayProducts(filtered);
+    }
+
+    function sortProducts() {
+      const option = document.getElementById("sortOption").value;
+      let sorted = [...products];
+      if (option === "priceLowHigh") {
+        sorted.sort((a, b) => a.price - b.price);
+      } else if (option === "priceHighLow") {
+        sorted.sort((a, b) => b.price - a.price);
+      }
+      displayProducts(sorted);
+    }
+
+    // Initial Display
+    displayProducts(products);
+  </script>
+</body>
+</html>
